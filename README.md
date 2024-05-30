@@ -64,3 +64,25 @@ sudo make
 
 Result should be TEST PASSED!  
 
+
+# Even after installation there is a chance that cudnn, cuda might not interact with each other, the .so files might not be saved or created in /usr/local/cuda-12.5/lib64 folder
+# Check if the so files exist in the lib64 folder. 
+
+ls /usr/local/cuda-12.5/lib64/libcudart.so*  
+ls /usr/local/cuda-12.5/lib64/libcublas.so*  
+ls /usr/local/cuda-12.5/lib64/libcublasLt.so*  
+ls /usr/local/cuda-12.5/lib64/libcufft.so*  
+ls /usr/local/cuda-12.5/lib64/libcusparse.so*  
+ls /usr/local/cuda-12.5/lib64/libcudnn.so*  
+
+# in case the files do not exist, locate them
+
+locate "filepath"  
+
+# when you find the file, create a symlink in the lib64 folder
+sudo ln -s /home/antpc/anaconda3/lib/python3.9/site-packages/nvidia/cudnn/lib/libcudnn.so.8 /usr/local/cuda-12.5/lib64/libcudnn.so.8  
+
+# While installing softwares like tensorflow, it is very important to first check whether the installed software is interacting with GPU. 
+Before installing tensorflow, go to https://www.tensorflow.org/install/source?hl=en#gpu and check which version of tensorflow is compatible with installed cuda and cudnn version  
+import tensorflow as tf  
+print("Num of GPUs available: ", len(tf.test.gpu_device_name()))  
