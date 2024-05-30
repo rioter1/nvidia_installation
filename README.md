@@ -84,7 +84,7 @@ sudo ln -s /home/antpc/anaconda3/lib/python3.9/site-packages/nvidia/cudnn/lib/li
 
 # While installing softwares like tensorflow, it is very important to first check whether the installed software is interacting with GPU. 
 Before installing tensorflow, go to https://www.tensorflow.org/install/source?hl=en#gpu and check which version of tensorflow is compatible with installed cuda and cudnn version  
-pip install tensorflow==2.15.0 (this will install gpu version)
-python
+pip install tensorflow==2.15.0 (this will install gpu version)   
+python  
 import tensorflow as tf  
 print("Num of GPUs available: ", len(tf.test.gpu_device_name()))  
