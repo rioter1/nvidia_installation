@@ -88,3 +88,41 @@ pip install tensorflow==2.15.0 (this will install gpu version)
 python  
 import tensorflow as tf  
 print("Num of GPUs available: ", len(tf.test.gpu_device_name()))  
+
+# Installing TensorRT  
+Download the tensorrt compatible with cuda version installed from   https://developer.nvidia.com/tensorrt/download    
+
+sudo dpkg -i nv-tensorrt-local-repo-${os}-${tag}_1.0-1_amd64.deb  
+sudo cp /var/nv-tensorrt-local-repo-${os}-${tag}/*-keyring.gpg /usr/share/keyrings/  
+sudo apt-get update  
+Install  
+sudo apt-get install tensorrt   
+
+Check installation  
+dpkg-query -W tensorrt  
+
+# symlinks will need to be created so that cuda has access to the instlled tensorrt binaries.
+How to check?  
+run python and import tensorflow  
+If you see messages like these  
+Could not load dynamic library 'libnvinfer_plugin.so.7'  
+this means tensorrt binaries are not visible to cuda  
+
+Locate file  
+ls /usr/lib/x86_64-linux-gnu/libnvinfer*  
+
+make symlink  
+sudo ln -s /usr/lib/x86_64-linux-gnu/libnvinfer_plugin.so.{V} /usr/lib/x86_64-linux-gnu/libnvinfer_plugin.so.7  
+V is the tensorrt version you have installed  
+
+Update path  
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH  
+
+save  
+source ~/.bashrc  
+
+# Check
+import tensorflow as tf  
+print("TensorFlow version:", tf.__version__)  
+print("Is TensorRT available:", tf.test.is_built_with_tensorrt())  
+
